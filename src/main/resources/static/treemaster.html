@@ -1,0 +1,34 @@
+<html>
+
+<head>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+<script type="text/javascript" src="js/angular.treeview.js"></script>
+<link rel="stylesheet" type="text/css" href="css/angular.treeview.css">
+
+  
+    
+</head>
+<div ng-app="treemasterApp">
+  <div ng-controller="treeMasterCTL">
+
+<div
+    data-angular-treeview="true"
+    data-tree-id="abc"
+    data-tree-model="treedata"
+    data-node-id="id"
+    data-node-label="label"
+    data-node-children="children" >
+</div>
+</div>
+</div>
+<script>
+var app = angular.module('treemasterApp', ['angularTreeview']);
+app.controller('treeMasterCTL', function($scope , $http) {
+	  $http.get("http://localhost:8076/fufweb/rest/datamodel/claimdata")
+	    .success(function(response) {alert("hi")});
+	
+	
+});
+</script>
+
+</html>

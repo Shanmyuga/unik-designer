@@ -1,0 +1,226 @@
+<div ng-include="'header/header.html'"></div>
+
+<div class="container">
+	<h1>Code Generator</h1>
+
+	<div class="row">
+		<div class="col-sm-3">
+			<div class="form-group">
+				<label for="layoutType">Layout Type</label><br /> <input
+					type="radio" name="layoutType" ng-model="layoutType" value="layout">Layout
+				<input type="radio" name="layoutType" ng-model="layoutType"
+					value="component">Component
+			</div>
+		</div>
+		<div class="col-sm-4">
+			<div class="form-group" ng-if="layoutType == 'layout'">
+				<label for="datamode">Select Layout</label><br /> <select
+					id="datamode" ng-model="$parent.selectedId" ng-change="change()"
+					class="form-control">
+					<option ng-repeat="operator in datamodels.options"
+						value="{{operator.value}}">{{operator.display}}</option>
+				</select>
+			</div>
+			<div class="form-group" ng-if="layoutType == 'component'">
+				<label for="datamode1">Select Component</label><br /> <select
+					id="datamode1" ng-model="$parent.selectedCompId"
+					ng-change="change()" class="form-control">
+					<option ng-repeat="operator in componentmodels.options"
+						value="{{operator.value}}">{{operator.display}}</option>
+				</select>
+			</div>
+		</div>
+		<div class="col-sm-3 form-inline">
+			<br />
+			<div class="form-group">
+				<p><button type="button" class="btn btn-primary" ng-click="selectOption()" title="Update"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button></p>
+			</div>
+			<div class="form-group">
+				<p><button type="button" class="btn btn-danger" ng-click="deleteOption()" title="Delete"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></p>
+			</div>
+			<div class="form-group">
+				<p><button type="button" class="btn btn-success" ng-click="addOption()" title="Add"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button></p>
+			</div>
+		</div>
+	</div>
+
+	<pre ng-if="layoutType == 'layout'">{{categories}}</pre>
+
+	<div class="row" ng-if="layoutType == 'layout'">
+		<div class="col-sm-6">
+			<div class="form-group">
+				<label for="uiTechnology">UI Technology</label><br /> <input
+					type="radio" name="uiTechnology" ng-model="$parent.uiTechnology"
+					value="AngularJs">Angular <input type="radio"
+					name="uiTechnology" ng-model="$parent.uiTechnology" value="React">React
+				</select>
+			</div>
+		</div>
+		<div class="col-sm-6">
+			<div
+				class="col-lg-12 col-sm-12 col-xs-12 alert alert-success ng-hide"
+				ng-show="isDisplay">
+				<strong>{{successMessage}}</strong>
+			</div>
+		</div>
+	</div>
+
+	<div ng-switch="uiTechnology" ng-if="layoutType == 'layout'">
+		<div ng-switch-when="AngularJs">
+
+			<div class="row">
+
+				<div class="col-sm-4" ng-show="!isCloud">
+					<div class=form-group>
+						<label for="codeGenPath">Code Generation Path</label><br /> <input
+							type="text" id="codeGenPath" name="codeGenPath"
+							class="form-control" ng-model="$parent.$parent.codeGenPath"
+							placeholder="Mandatory" required="required" />
+					</div>
+				</div>
+				<div class="col-sm-4">
+					<div class=form-group>
+						<label for="projectName">Project Name</label><br /> <input
+							type="text" id="projectName" name="projectName"
+							class="form-control" ng-model="$parent.$parent.projectName"
+							placeholder="Mandatory" />
+					</div>
+				</div>
+				<div class="col-sm-4">
+					<div class=form-group>
+						<label for="moduleName">Module Name</label><br /> <input
+							type="text" id="moduleName" name="moduleName"
+							class="form-control" ng-model="$parent.$parent.moduleName"
+							placeholder="Mandatory" />
+					</div>
+				</div>
+
+				<div class="col-sm-4">
+					<div class=form-group>
+						<label for="componentName">Component Name</label><br /> <input
+							type="text" id="componentName" name="componentName"
+							class="form-control" ng-model="$parent.$parent.componentName"
+							placeholder="Mandatory" />
+					</div>
+				</div>
+				<div class="col-sm-4">
+					<div class=form-group>
+						<label for="projectName">Config Name</label><br /> 
+						<select
+							id="configName" name="configName"
+							ng-model="$parent.$parent.configName" class="form-control"
+							required="required">
+							<option ng-repeat="config in angularConfigList" value="{{config.id}}">{{config.configName}}</option>
+						</select>
+					</div>
+				</div>
+				<div class="col-sm-4">
+					<div class=form-group>
+						<label for="userDefinedPath">User Defined Path</label><br /> <input
+							type="text" id="userDefinedPath" name="userDefinedPath"
+							class="form-control" ng-model="$parent.$parent.userDefinedPath"
+							placeholder="Not Mandatory" />
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-sm-6">
+					<div class="row">
+						<div class="col-sm-3">
+							<p>
+								<button type="button" ng-disabled="codeGenerating"
+									class="btn btn-primary" ng-click="callAngularCodeGen()">Generate
+									Code</button>
+							</p>
+							<img ng-if="codeGenerating"
+								src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+						</div>
+						<div class="col-sm-3">
+							<p>
+								<button type="button" ng-if="isDisplay && isError == false"
+									class="btn btn-primary" ng-click="downloadFile()">Download</button>
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+		<div ng-switch-when="React">
+
+			<div class="row">
+
+				<div class="col-sm-4" ng-show="!isCloud">
+
+					<div class=form-group>
+						<label for="codeGenPath">Code Generation Path</label><br /> <input
+							type="text" id="codeGenPath" name="codeGenPath"
+							class="form-control" ng-model="$parent.$parent.codeGenPath"
+							placeholder="Mandatory" required="required" />
+					</div>
+
+				</div>
+
+				<div class="col-sm-4">
+					<div class=form-group>
+						<label for="projectName">Project Name</label><br /> <input
+							type="text" id="projectName" name="projectName"
+							class="form-control" ng-model="$parent.$parent.projectName"
+							placeholder="Mandatory" />
+					</div>
+				</div>
+
+				<div class="col-sm-4">
+
+					<div class=form-group>
+						<label for="projectName">Config Name</label><br /> <select
+							id="configName" name="configName" ng-model="$parent.$parent.configName"
+							class="form-control" required="required">
+							<option ng-repeat="config in reactConfigList" value="{{config.id}}">{{config.configName}}</option>
+						</select>
+					</div>
+
+				</div>
+
+				<div class="col-sm-4">
+
+					<div class="form-group">
+						<label for="genLoginScreen">Generate Login Screen</label><br /> <select
+							id="genLoginScreen" name="genLoginScreen"
+							ng-model="$parent.$parent.genLoginScreen" class="form-control"
+							required="required">
+							<option value="true">True</option>
+							<option value="false">False</option>
+						</select>
+					</div>
+				</div>
+
+			</div>
+
+			<div class="row">
+				<div class="col-sm-6">
+					<div class="row">
+						<div class="col-sm-3">
+							<p>
+								<button type="button" ng-disabled="codeGenerating"
+									class="btn btn-primary" ng-click="callAngularCodeGen()">Generate
+									Code</button>
+							</p>
+							<img ng-if="codeGenerating"
+								src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+						</div>
+						<div class="col-sm-3">
+							<p>
+								<button type="button" ng-if="isDisplay && isError == false"
+									class="btn btn-primary" ng-click="downloadFile()">Download</button>
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+

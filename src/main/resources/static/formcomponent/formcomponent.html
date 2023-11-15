@@ -1,0 +1,317 @@
+<div ng-include="'header/header.html'"></div>
+
+<div class="container">
+	<h1>Form Component Setup</h1>
+	<button type="button" class="btn btn-success btn-sm" ng-click="addFormComponent()" title="Add"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+	
+	<div class="panel panel-default" ng-if="showAddPanel">
+		<div class="panel-heading">Add New Form Component</div>
+		
+		<div class="panel-body">
+			<div class="row">
+				<div class="col-sm-4">
+					<div class=form-group>
+						<label for="baseComponentName">Component Name</label><br /> 
+						<input type="text" id="baseComponentName" name="baseComponentName"
+							class="form-control" ng-model="$parent.baseComponentName"
+							placeholder="Mandatory" required="required" />
+					</div>
+				</div>
+				<div class="col-sm-4">
+					<div class=form-group>
+						<label for="displayName">Display Name</label><br /> 
+						<input type="text" id="displayName" name="displayName"
+							class="form-control" ng-model="$parent.displayName"
+							placeholder="Mandatory" required="required" />
+					</div>
+				</div>
+				<div class="col-sm-1">
+					<div class="form-group">
+						<label for="containerElement">Has Columns?</label>
+						<input type="checkbox" id="containerElement" name="containerElement"
+							class="form-control" ng-model="$parent.containerElement" />
+					</div>		
+				</div>
+				<div class="col-sm-1">
+					<div class="form-group">
+						<label for="containerElement">Hide?</label>
+						<input type="checkbox" id="hideElement" name="hideElement"
+							class="form-control" ng-model="$parent.hideElement" />
+					</div>		
+				</div>
+				<div class="col-sm-1">	
+					<div class="form-group">	
+						<label for="containerRowCount">Row</label>	
+						<input type="text" id="containerRowCount" name="containerRowCount"
+							class="form-control" ng-model="$parent.containerRowCount"
+							placeholder="1" />
+					</div>		
+				</div>	
+				<div class="col-sm-1">	
+					<div class="form-group">		
+						<label for="containerColCount">Col</label>
+						<input type="text" id="containerColCount" name="containerColCount"
+							class="form-control" ng-model="$parent.containerColCount"
+							placeholder="1" />		
+					</div>
+				</div>
+			</div>
+			<div class="row" ng-repeat="param in selectedParams">
+				<div class="col-sm-4">
+					<div class=form-group>
+						<label for="paramName">Param Name</label><br /> 
+						<input type="text" id="paramName" name="paramName"
+							class="form-control" ng-model="param.paramName"
+							placeholder="Mandatory" required="required" />
+					</div>
+				</div>
+				<div class="col-sm-3">
+					<div class=form-group>
+						<label for="paramType">Param Type</label><br /> 
+						<select id="paramType" ng-model="param.paramType" class="form-control">
+							<option value="">Select</option>
+							<option value="text">Text</option>
+							<option value="array">Array</option>
+							<option value="options">Options</option>
+				</select>
+					</div>
+				</div>
+				<div class="col-sm-4">
+					<div class=form-group>
+						<label for="defaultValue">Default Value</label>
+						<input type="text" id="defaultValue" name="defaultValue"
+							class="form-control" ng-model="param.defaultValue"
+							placeholder="Mandatory" required="required" />
+					</div>
+				</div>
+				<div class="col-sm-1">
+					<br />
+					<div class=form-group>
+						<button type="button" class="btn btn-danger" ng-click="deleteParam($index)" title="Delete"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-6 col-sm-offset-6 form-inline text-right">
+					<div class=form-group>
+						<p><button type="button" class="btn btn-default btn-sm" 
+								   ng-click="resetParams()" title="Reset Params">
+							Reset
+						</button></p>
+					</div>
+					
+					<div class=form-group>
+						<p><button type="button" class="btn btn-info btn-sm" 
+									data-toggle="modal" data-target="#addDisplayTemplate" 
+									title="Add Display Template">
+							Add Display Template
+						</button></p>
+					</div>
+					
+					<div class=form-group>
+						<p><button type="button" class="btn btn-primary btn-sm" 
+									data-toggle="modal" data-target="#addFieldProps" 
+									title="Add Form Field Properties">
+							Add Properties
+						</button></p>
+					</div>
+					
+					<div class=form-group>
+						<p><button type="button" class="btn btn-primary btn-sm" 
+								   ng-click="addParams()" title="Add Params">
+							Add Params
+						</button></p>
+					</div>
+					
+					<div class=form-group>
+						<p><button type="button" class="btn btn-success btn-sm" 
+								   ng-click="saveFormComponent()" title="Save">
+							Save
+						</button></p>
+					</div>
+				</div>
+			</div>	
+		</div>
+	</div>
+
+	<div id="addDisplayTemplate" class="modal fade" role="dialog">
+		<div class="modal-dialog">
+
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Add Display Template</h4>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="form-group">
+								<label for="copyTemplateFrom">Copy Template From:</label><br /> 
+								<select id="copyTemplateFrom" ng-model="copyTemplateFrom" class="form-control" ng-change="copyTemplate()">
+									<option value="">Select</option>
+									<option ng-repeat="comp in componentList" value="{{ comp.componentName }}">{{ comp.displayName }}</option>
+								</select>
+							</div>
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="form-group">
+								<label for="formDisplayTemplate">Template:</label><br /> 
+								<textarea id="formDisplayTemplate" name="formDisplayTemplate"
+									class="form-control" ng-model="formDisplayTemplate"
+									placeholder="Mandatory" required="required" rows="10">
+								</textarea>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary" ng-click="saveFormComponent()">Save</button>
+				</div>
+			</div>
+		</div>
+	</div>	
+	
+	<div id="addFieldProps" class="modal fade" role="dialog">
+		<div class="modal-dialog modal-lg">
+
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Add Field Properties</h4>
+				</div>
+				<div class="modal-body">
+					<div class="panel panel-default">
+						<div class="panel-heading">Form Properties</div>
+						
+						<div class="panel-body">
+							<div class="row" ng-if="selectedRow != null" ng-repeat="property in selectedRow.componentProps">
+								<div class="col-sm-4">
+									<div class=form-group>
+										<label for="propertyName">Display Name</label><br />
+										<input type="text" id="propertyName" name="propertyName" ng-focus="selectProperty($index)"
+												class="form-control" ng-model="property.propertyName"
+												placeholder="Mandatory" required="required" /> 
+									</div>
+								</div>
+								<div class="col-sm-3">
+									<div class=form-group>
+										<label for="propertyKey">Property Key</label><br />
+										<input type="text" id="propertyKey" name="propertyKey" ng-focus="selectProperty($index)"
+												class="form-control" ng-model="property.propertyKey"
+												placeholder="Mandatory" required="required" /> 
+									</div>
+								</div>
+								<div class="col-sm-3">
+									<div class="form-group">
+										<label for="propertyDataType">Data Type</label><br /> 
+										<select id="propertyDataType" ng-model="property.propertyDataType" class="form-control" ng-change="addDataTypeOptions($index)">
+											<option value="">Select</option>
+											<option value="text">Textbox</option>
+											<option value="dropdown">Dropdown</option>
+											<option value="check">Checkbox</option>
+										</select>
+									</div>
+								</div>
+								<div class="col-sm-2 form-inline">
+									<br />
+									<div class=form-group>
+										<p><button type="button" class="btn btn-success btn-sm" 
+												   ng-click="addFieldProps()" title="Add Property">
+											<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+										</button></p>
+									</div>
+									
+									<div class=form-group>
+										<p><button type="button" class="btn btn-danger btn-sm" 
+												   ng-click="deleteFieldProps($index)" title="Delete Property">
+											<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+										</button></p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<div class="panel panel-default" ng-if="showDropDownValues">
+						<div class="panel-heading">Prop Dropdown values</div>
+						
+						<div class="panel-body">
+							<div class="row" ng-repeat="option in selectedProperty.options">
+								<div class="col-sm-5">
+									<div class=form-group>
+										<label for="propDropDownKey">Dropdown key</label><br />
+										<input type="text" id="propDropDownKey" name="propDropDownKey"
+												class="form-control" ng-model="option.value"
+												placeholder="Mandatory" required="required" /> 
+									</div>
+								</div>
+								<div class="col-sm-4">
+									<div class=form-group>
+										<label for="propDropDownLabel">Dropdown Label</label><br />
+										<input type="text" id="propDropDownLabel" name="propDropDownLabel"
+												class="form-control" ng-model="option.display"
+												placeholder="Mandatory" required="required" /> 
+									</div>
+								</div>
+								<div class="col-sm-3 form-inline">
+									<br />
+									<div class=form-group>
+										<p><button type="button" class="btn btn-success btn-sm" 
+												   ng-click="addPropOptions()" title="Add Options">
+											<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+										</button></p>
+									</div>
+									
+									<div class=form-group>
+										<p><button type="button" class="btn btn-danger btn-sm" 
+												   ng-click="deletePropOptions($index)" title="Delete Options">
+											<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+										</button></p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary" ng-click="saveFormComponent()">Save</button>
+				</div>
+			</div>
+
+		</div>
+	</div>
+		
+	<div class="panel panel-default">
+		<!-- Default panel contents -->
+		<div class="panel-heading">Form Components</div>
+		
+		<!-- Table -->
+		<table class="table table-striped table-hover">
+			<thead>
+				<tr>
+					<th>Component Name</th>
+					<th>Display Name</th>
+					<th>Has Columns</th>
+					<th>Hide?</th>
+					<th>Delete?</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="comp in componentList" ng-click="updateRow($index)">
+					<td>{{comp.componentName}}</td>
+					<td>{{comp.displayName}}</td>
+					<td>{{comp.containerElement? 'Yes': 'No'}}</td>
+					<td>{{comp.hideElement? 'Yes': 'No'}}</td>
+					<td width="7%"><button type="button" class="btn btn-danger" ng-click="deleteRow($index)" title="Delete"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></td>
+				</tr>			
+			</tbody>
+		</table>
+	</div>	
+</div>	

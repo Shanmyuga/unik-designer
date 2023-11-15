@@ -1,0 +1,108 @@
+<h1>Preview Screen</h1>
+<p>Boot Strap Form</p>
+
+<div class="container">
+   <form>
+  
+      
+  <!--  <div ng-repeat="sect in layoutmodel.layout">
+  
+   <div  ng-if="sect.type=='section'">
+  
+   <div ng-repeat="obj in sect.columns">
+   
+
+    <div class="row"  ng-repeat="cd in questions">
+    <div ng-include="questionprops.html"></div>
+    </div>
+     
+  </div>
+  </div>
+
+  
+  
+    
+   <div ng-repeat="cd in questionLayout">
+   
+<div ng-include="questionprops.html"></div>
+    
+     
+  </div>
+   <div class="row"  >
+   <div class="col-md-8">
+         <button type="button" class="btn btn-primary" ng-click="back()">Back</button>
+   
+      <button type="button" class="btn btn-primary" ng-click="next()">Next</button>
+      </div>
+      </div>
+      
+         -->
+         
+          <div class="row">
+      <h3>Vertical Tabs</h3>
+ 
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 thumbnail">
+          <tabset>
+            <tab 
+              ng-repeat="tab in tabs"
+              ng-attr-id="{{tab.id}}"
+              heading="{{tab.title}}"
+              active="tab.active"
+              disabled="tab.disabled"
+              select="selectTab(tab.id)">
+                <div class="tab-text">
+                {{tab.content}}
+                </div>
+            </tab>
+          </tabset>
+ 
+        </div> <!-- /col -->
+    </div> <!-- /row -->
+ 
+    </form>
+</div>
+
+<script type="text/ng-template" id="questionprops.html">
+
+
+<div class="col-md-8">
+    <div class="form-group" ng-if="cd.type=='textbox'">
+    <span>{{ $index }} .</span>
+       <label for="inputEmail">{{cd.label}}</label>
+        <input type="text" class="form-control"  ng-model="cd.htmlID" id="{{cd.htmlID}}" placeholder="{{cd.label}}">
+    </div>
+   <div class="form-group" ng-if="cd.type=='datepicker'">
+       <label for="inputEmail">{{cd.label}}</label>
+    <div style="display:inline-block; min-height:290px;">
+  <uib-datepicker ng-model="dt" min-date="minDate" show-weeks="true" class="well well-sm" custom-class="getDayClass(date, mode)"></uib-datepicker>
+</div>
+
+    </div>
+     <div class="form-group" ng-if="cd.type=='radiobutton'">
+  <label for="radio">{{cd.label}}</label>
+<div class="radio" ng-repeat="c in cd.options">
+<label><input type="radio" ng-model="cd.htmlID" id="{{cd.htmlID}}" name="optradio" value="{{c.value}}">{{c.display}}</label>
+</div>
+
+</div>
+     <div class="form-group" ng-if="cd.type=='checkbox'">
+  <label for="checkbox">{{cd.label}}</label>
+<div class="checkbox" ng-repeat="c in cd.options">
+<label><input type="checkbox" ng-model="cd.htmlID" id="{{cd.htmlID}}" name="optradio" value="{{c.value}}">{{c.display}}</label>
+</div>
+
+</div>
+ 
+
+    
+       <div class="form-group" ng-if="cd.type=='dropdown'">
+  <label for="sel1">{{cd.label}}</label>
+  <select class="form-control" id="{{cd.htmlID}}" ng-model="cd.htmlID">
+     <option ng-repeat="operator in cd.options" value="{{operator.value}}">{{operator.display}}</option>
+  </select>
+  <br>
+ </div>
+
+   </div>
+</div>
+</script>

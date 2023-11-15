@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<Rule>
+	<Condition>
+		<QuestionCondition>
+			<questID>TG.GR1</questID>
+			<conditional>==</conditional>
+			<answerValue>M</answerValue>
+		</QuestionCondition>
+		<QuestionCondition>
+			<questID>TG.GR2</questID>
+			<conditional>==</conditional>
+			<answerValue>20</answerValue>
+		</QuestionCondition>
+	</Condition>
+	<Decision>
+		<DecisionCondition>
+			<decisionkey>SETQ</decisionkey>
+			<decisionValue>TG.GR3:2000</decisionValue>
+		</DecisionCondition>
+		<DecisionCondition>
+			<decisionkey>SETQ</decisionkey>
+			<decisionValue>TG.GR3:2000</decisionValue>
+		</DecisionCondition>
+	</Decision>
+</Rule>

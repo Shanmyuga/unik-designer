@@ -1,0 +1,37 @@
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="Rule">
+    <xs:complexType mixed="true">
+      <xs:sequence>
+        <xs:element name="Condition">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="QuestionCondition" maxOccurs="unbounded" minOccurs="0">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element type="xs:string" name="questID"/>
+                    <xs:element type="xs:string" name="conditional"/>
+                    <xs:element type="xs:string" name="answerValue"/>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Decision">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="DecisionCondition" maxOccurs="unbounded" minOccurs="0">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element type="xs:string" name="decisionkey"/>
+                    <xs:element type="xs:string" name="decisionValue"/>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

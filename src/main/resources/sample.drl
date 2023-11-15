@@ -1,0 +1,27 @@
+
+		package com.esrx.drools;
+	
+	import com.cognizant.fufapp.data.model.QuestionFact;
+	
+	import com.cognizant.fufapp.data.model.DecisionModel; 
+	rule "GRID_RULE1"
+	    dialect "mvel"
+	    when
+	    
+	     
+     QuestionFact( questID == "TG.GR1" , answerValue == "M" )
+	      
+	         
+     QuestionFact( questID == "TG.GR2" , answerValue == "20" )
+	      
+	         
+	        dm : DecisionModel( )
+	    then
+	    
+	
+    dm.createDecision("SETQ","TG.GR3:2000 ");
+	      
+	         
+	     
+	end
+	

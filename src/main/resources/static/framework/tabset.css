@@ -1,0 +1,80 @@
+.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+ 
+.ng-isolate-scope > .nav-tabs {
+  border-bottom: 0;
+}
+ 
+.tab-content > .tab-pane,
+.pill-content > .pill-pane {
+  display: none;
+ 
+}
+ 
+.tab-content > .active,
+.pill-content > .active {
+  display: block;
+}
+ 
+.ng-isolate-scope > .nav-tabs > li {
+  float: none;
+}
+ 
+.ng-isolate-scope > .nav-tabs > li > a {
+  min-width: 74px;
+  margin-right: 0;
+  margin-bottom: 3px;
+}
+ 
+.ng-isolate-scope > .nav-tabs {
+  float: left;
+  margin-right: 19px;
+  border-right: 1px solid #ddd;
+}
+ 
+.ng-isolate-scope > .nav-tabs > li > a {
+  margin-right: -1px;
+  -webkit-border-radius: 4px 0 0 4px;
+     -moz-border-radius: 4px 0 0 4px;
+          border-radius: 4px 0 0 4px;
+}
+ 
+.ng-isolate-scope > .nav-tabs > li > a:hover,
+.ng-isolate-scope > .nav-tabs > li > a:focus {
+  border-color: #eeeeee #dddddd #eeeeee #eeeeee;
+}
+ 
+.ng-isolate-scope > .nav-tabs .active > a,
+.ng-isolate-scope > .nav-tabs .active > a:hover,
+.ng-isolate-scope > .nav-tabs .active > a:focus {
+  border-color: #ddd transparent #ddd #ddd;
+  border-right-color: #ffffff;
+}
+ 
+.ng-isolate-scope > .tab-content > .tab-pane .active {
+  border-color: #ddd transparent #ddd #ddd;
+  border-left-color: #ffffff;
+ 
+}
+ 
+.ng-isolate-scope > .tab-content > .tab-pane > .tab-text {
+  padding-top: 10px;
+}
+
+.nav-tabs > li{
+    background: -webkit-linear-gradient(#2AB8CE, #19808f); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(#2AB8CE, #19808f); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(#2AB8CE, #19808f); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(#2AB8CE, #19808f); /* Standard syntax (must be last) */
+    border-color: #ECF0F1;
+    border: 1px solid #ECF0F1;
+    border-radius: 4px 4px 0px 0px;
+}
+
+.nav-tabs > li > a{
+	color:white;
+	padding:3px;
+}
+
+.nav-tabs > li > a:hover{
+	color:#19808f;
+}

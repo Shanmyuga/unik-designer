@@ -1,0 +1,318 @@
+<!-- Markup for lists inside the dropzone. It's inside a seperate template
+     because it will be used recursively. The dnd-list directive enables
+     to drop elements into the referenced array. The dnd-draggable directive
+     makes an element draggable and will transfer the object that was
+     assigned to it. If an element was dragged away, you have to remove
+     it from the original list yourself using the dnd-moved attribute -->
+<script type="text/ng-template" id="list.html">
+    <ul dnd-list="list">
+        <li ng-repeat="item in list"
+            dnd-draggable="item"
+            dnd-effect-allowed="move"
+            dnd-moved="list.splice($index, 1)"
+            dnd-selected="models.selected = item"
+            ng-class="{selected: models.selected === item}"
+            ng-include="item.type + '.html'">
+        </li>
+    </ul>
+</script>
+
+<!-- This template is responsible for rendering a container element. It uses
+     the above list template to render each container column -->
+<script type="text/ng-template" id="section.html">
+    <div class="container-element box box-blue"> 
+        <h3>{{item.label}}</h3>
+        <div class="column" ng-repeat="list in item.columns" ng-include="'list.html'"></div>
+        <div class="clearfix"></div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="Grid.html">
+    <div class="container-element-grid box box-blue">
+        <h3>{{item.label}}</h3>
+        <div class="column" ng-repeat="list in item.columns" ng-include="'list.html'"></div>
+        <div class="clearfix"></div>
+    </div>
+</script>
+<script type="text/ng-template" id="QuestionCondition.html">
+    <div class="container-element-grid box box-blue">
+        <h3>{{item.label}}</h3>
+        <div class="column" ng-repeat="list in item.columns" ng-include="'list.html'"></div>
+        <div class="clearfix"></div>
+    </div>
+</script>
+<script type="text/ng-template" id="DecisionCondition.html">
+    <div class="container-element-grid box box-blue">
+        <h3>{{item.label}}</h3>
+        <div class="column" ng-repeat="list in item.columns" ng-include="'list.html'"></div>
+        <div class="clearfix"></div>
+    </div>
+</script>
+<!-- Template for a normal list item -->
+<script type="text/ng-template" id="item.html">
+    <div class="item">Item {{item.id}}</div>
+</script>
+
+
+<!-- Template for a normal list item -->
+<script type="text/ng-template" id="header.html">
+    <div class="item">
+		<H1>{{item.label}}</H1>
+	</div>
+</script>
+<script type="text/ng-template" id="gridheader.html">
+    <div class="item">
+		{{item.label}}
+	</div>
+</script>
+<!-- Template for a normal list item -->
+<script type="text/ng-template" id="textbox.html">
+
+<div class="item">
+
+ 
+  <div class="offset3"><input type="text" ng-model="item.selectedVal" id="{{item.id}}" size="{{item.length}}" placeholder="{{item.placeHolder}}"></input></div>
+
+</div>
+  
+</script>
+
+<!-- Template for a normal list item -->
+<script type="text/ng-template" id="radiobutton.html">
+    <div class="item">
+	
+		<div class="offset3"> 
+
+
+<table class='table borderless'>
+        <tr ng-repeat="c in item.options">
+            <td>{{c.display}}</td>
+               <td> <input type="radio" name="name" value="{{c.value}}" required /></td>
+        </tr>
+    </table>
+
+
+</div>
+	</div>
+
+</script>
+
+
+<!-- Template for a normal list item -->
+<script type="text/ng-template" id="dropdown.html">
+     <div class="item">
+	
+	
+<div class="offset3"> 
+<select id="{{item.id}}"  ng-model="item.selectedVal" >
+    <option ng-repeat="operator in item.options" value="{{operator.value}}">{{operator.display}}</option>
+</select>
+</div>
+	</div>
+
+</script>
+
+
+<!-- Template for a normal list item -->
+<script type="text/ng-template" id="datepicker.html">
+    <div class="item">
+	<div class="offset2"><Label>{{item.label}}</Label></div>
+	<div class="offset3">	<input type="date" ></div>
+	
+	</div>
+</script>
+
+
+<!-- Template for a normal list item -->
+<script type="text/ng-template" id="checkbox.html">
+    <div class="item">
+		<div class="offset2"><Label>{{item.label}}</Label></div>
+		<div class="offset3">	
+<table class='table borderless'>
+        <tr ng-repeat="c in item.options">
+            <td>{{c.display}}</td>
+               <td> <input type="checkbox" name="name" value="{{c.value}}" required /></td>
+        </tr>
+    </table>
+
+</div>
+	</div>
+</script>
+
+<!-- Template for a normal list item -->
+<script type="text/ng-template" id="textprops.html">
+		<strong>Label: </strong>
+		<input type="text" ng-model="models.selected.label" class="form-control" style="margin-top: 5px" /><br>
+        <strong>HTML ID: </strong>
+		<input type="text" ng-model="models.selected.htmlID" class="form-control" style="margin-top: 5px" />
+		<strong>Length: </strong>
+		<input type="text" ng-model="models.selected.length" class="form-control" style="margin-top: 5px" />
+		<strong>Format: </strong>
+		<input type="text" ng-model="models.selected.format" class="form-control" style="margin-top: 5px" />
+		<strong>Mandatory: </strong>
+		<input type="checkbox" ng-model="models.selected.mandatory" style="margin-top: 5px" /><br/>
+         <strong>ReadOnly: </strong>
+		<input type="checkbox" ng-model="models.selected.readonly" style="margin-top: 5px" /><br/>
+         <strong>Roles: </strong>
+		<input type="text" ng-model="models.selected.roles" class="form-control" style="margin-top: 5px" /><br/>
+		<strong>Error Message: </strong>
+		<input type="text" ng-model="models.selected.errmsg" class="form-control" style="margin-top: 5px" />
+</script>
+
+
+<script type="text/ng-template" id="datepickerprops.html">
+		<strong>Label: </strong>
+		<input type="text" ng-model="models.selected.label" class="form-control" style="margin-top: 5px" /><br>
+		 <strong>HTML ID: </strong>
+		<input type="text" ng-model="models.selected.htmlID" class="form-control" style="margin-top: 5px" />
+		<strong>Format: </strong>
+		<input type="text" ng-model="models.selected.format" class="form-control" style="margin-top: 5px" />
+		<strong>Mandatory: </strong>
+		<input type="checkbox" ng-model="models.selected.mandatory" style="margin-top: 5px" /><br/>
+        <strong>ReadOnly: </strong>
+		<input type="checkbox" ng-model="models.selected.readonly" style="margin-top: 5px" /><br/>
+
+		<strong>Roles: </strong>
+		<input type="text" ng-model="models.selected.roles" class="form-control" style="margin-top: 5px" /><br/>
+		<strong>Error Message: </strong>
+		<input type="text" ng-model="models.selected.errmsg" class="form-control" style="margin-top: 5px" />
+</script>
+<!-- Template for a normal list item -->
+<script type="text/ng-template" id="dropdownprops.html">
+		<strong>Label: </strong>
+		<input type="text" ng-model="models.selected.label" class="form-control" style="margin-top: 5px" /><br>
+ <strong>HTML ID: </strong>
+		<input type="text" ng-model="models.selected.htmlID" class="form-control" style="margin-top: 5px" />
+  		<strong>Options:</strong>
+<table ng-hide="!models.selected.options.length" class='table borderless'>
+ <tr ng-repeat="c in models.selected.options">
+<td>
+<input type="text" ng-model="c.display"  class="form-control" style="margin-top: 5px" />
+</td>
+
+<td>
+<input type="text" ng-model="c.value"  class="form-control" style="margin-top: 5px" />
+</td>
+</tr>
+</table>
+<br>
+<strong>Display</strong> <input type="text"  ng-model="models.selected.tempdisplay" class="form-control" />
+
+<strong>OptionValue</strong> <input type="text"  ng-model="models.selected.tempoption" class="form-control" /><br>
+
+
+<input type="button" value="Add Options" class="btn btn-primary"  ng-click="addOption()"/>
+
+<strong>ReadOnly: </strong>
+		<input type="checkbox" ng-model="models.selected.readonly" style="margin-top: 5px" /><br/>
+		<strong>Roles: </strong>
+		<input type="text" ng-model="models.selected.roles" class="form-control" style="margin-top: 5px" /><br/>
+  		<strong>Error Message: </strong>
+		<input type="text" ng-model="models.selected.errmsg" class="form-control" style="margin-top: 5px" />
+</script>
+ 
+
+<!-- Template for a normal list item -->
+<script type="text/ng-template" id="headerprops.html">
+    <strong>Label: </strong>
+
+		<input type="text" ng-model="models.selected.label" class="form-control" style="margin-top: 5px" /><br>
+ <strong>HTML ID: </strong>
+		<input type="text" ng-model="models.selected.htmlID" class="form-control" style="margin-top: 5px" />
+
+	<strong>DefaultHide: </strong>
+		<input type="checkbox" ng-model="models.selected.hideData" style="margin-top: 5px" /><br/>
+</script>
+
+<!-- Main area with dropzones and source code -->
+
+    <div class="row">
+        <div ng-repeat="(zone, list) in models.dropzones" class="col-md-9">
+            <div class="dropzone box box-yellow">
+                <!-- The dropzone also uses the list template -->
+                <h3>Drag and Drop Fields Here </h3>
+                <div ng-include="'list.html'"></div>
+            </div>
+            
+         <input type="text" ng-model="models.screenname" placeholder= "Enter Screen Name"  class="form-control"/> 
+    <h2>Generated Model</h2>
+    <pre>{{modelAsJson}}</pre> 
+    <br/>
+   <button type="button" class="btn btn-primary" ng-click="saveLayout()">Save Layout</button>
+   
+      <button type="button" class="btn btn-primary" ng-click="previewScreen()">Preview Screen</button>
+        </div>
+   
+  
+
+
+<!-- Sidebar -->
+ <div class="col-md-2">
+ 
+    <div class="toolbox box box-grey box-padding"  >
+   
+        <h3>New Elements</h3>
+        <ul>
+            <!-- The toolbox only allows to copy objects, not move it. After a new
+                 element was created, dnd-copied is invoked and we generate the next id -->
+            <li ng-repeat="item in models.templates"
+                dnd-draggable="item"
+                dnd-effect-allowed="copy"
+                dnd-copied="item.id = item.id + 1"
+                >
+                <button type="button" class="btn btn-default" disabled="disabled">{{item.type}}</button>
+            </li>
+        </ul>
+         <div class="trashcan box box-grey box-padding">
+         <h3>Trashcan</h3>
+        <ul dnd-list="[]">
+            <li><img src="rules/trashcan.jpg" height="72" width="100"/></li>
+        </ul>
+        </div>
+    </div>
+
+    <div ng-if="models.selected" class="box box-grey box-padding" width="200px">
+        <h3>Set Field Properties</h3>
+        <!-- <strong>Type: </strong> {{models.selected.type}}<br>
+		<input type="text" ng-model="models.selected.id" class="form-control" style="margin-top: 5px" /> -->
+		<div ng-if="models.selected.type == 'textbox'">
+			<div ng-include="'textprops.html'"></div>
+		</div>
+		<div ng-if="models.selected.type == 'header'">
+			<div ng-include="'headerprops.html'"></div>
+		</div> 
+		<div ng-if="models.selected.type == 'gridheader'">
+			<div ng-include="'headerprops.html'"></div>
+		</div> 
+		<div ng-if="models.selected.type == 'dropdown'">
+			<div ng-include="'dropdownprops.html'"></div>
+		</div> 
+		<div ng-if="models.selected.type == 'checkbox'">
+			<div ng-include="'dropdownprops.html'"></div>
+		</div> 
+		<div ng-if="models.selected.type == 'radiobutton' ">
+			<div ng-include="'dropdownprops.html'"></div>
+		</div> 
+	<div ng-if="models.selected.type == 'datepicker' ">
+			<div ng-include="'datepickerprops.html'"></div>
+		</div> 
+		
+		<div ng-if="models.selected.type == 'section' ">
+			<div ng-include="'headerprops.html'"></div>
+		</div> 
+		<div ng-if="models.selected.type == 'Grid' ">
+			<div ng-include="'headerprops.html'"></div>
+		</div> 
+		
+		<div ng-if="models.selected.type == 'QuestionCondition' ">
+			<div ng-include="'headerprops.html'"></div>
+		</div> 
+    </div>
+
+   
+        <!-- If you use [] as referenced list, the dropped elements will be lost -->
+       
+ 
+    </div>
+</div>
+</div>

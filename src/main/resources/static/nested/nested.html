@@ -1,0 +1,310 @@
+<!-- Markup for lists inside the dropzone. It's inside a seperate template
+     because it will be used recursively. The dnd-list directive enables
+     to drop elements into the referenced array. The dnd-draggable directive
+     makes an element draggable and will transfer the object that was
+     assigned to it. If an element was dragged away, you have to remove
+     it from the original list yourself using the dnd-moved attribute -->
+<script type="text/ng-template" id="list.html">
+    <ul dnd-list="list">
+        <li ng-repeat="item in list"
+            dnd-draggable="item"
+            dnd-effect-allowed="move"
+            dnd-moved="list.splice($index, 1)"
+            dnd-selected="selectItem(item)"
+            ng-class="{selected: models.selected === item}"
+            ng-include="'rest/datamodel/component/'+ item.type">
+        </li>
+    </ul>
+</script>
+
+<!-- This template is responsible for rendering a container element. It uses
+     the above list template to render each container column -->
+
+<!-- Template for a normal list item -->
+<script type="text/ng-template" id="datatablecolumn.html">
+<div class="item">
+	{{item.display}}
+</div>
+</script>
+
+<script type="text/ng-template" id="datatableprops.html">
+	<strong>Key Field: </strong>
+    <input type="text" ng-model="models.selected.keyField" class="form-control" style="margin-top: 5px" /><br/>
+
+	<strong>Header Field: </strong>
+    <input type="text" ng-model="models.selected.valueField" class="form-control" style="margin-top: 5px" /><br/>
+
+    <input type="button" value="Add Column" class="btn btn-primary" ng-click="addColumn()"/><br />
+
+    <strong>Number of Records in a Page: </strong>
+    <input type="text" ng-model="models.selected.recordPerPage" class="form-control" style="margin-top: 5px" /><br/>
+
+    <strong>Record Selection Type: </strong>
+    <input type="text" ng-model="models.selected.recordSelectionType" class="form-control" style="margin-top: 5px" /><br/>
+    <strong>Row Height: </strong>
+    <input type="text" ng-model="models.selected.rowHeight" class="form-control" style="margin-top: 5px" /><br/>
+
+    <strong>Header Height: </strong>
+    <input type="text" ng-model="models.selected.headerHeight" class="form-control" style="margin-top: 5px" /><br/>
+</script>
+
+<script type="text/ng-template" id="datatablecolumnprops.html">
+    <strong>Display: </strong>
+    <input type="text" ng-model="models.selected.display" class="form-control" style="margin-top: 5px" /><br>
+    <strong>Prop Value: </strong>
+    <input type="text" ng-model="models.selected.value" class="form-control" style="margin-top: 5px" /><br>
+	<strong>Data Type: </strong>
+    <select ng-model="models.selected.dataType" class="form-control">
+        <option value="alpha">Alpha</option>
+        <option value="numeric">Numeric</option>
+        <option value="alphanumeric">Alpha Numeric</option>
+        <option value="date">Date</option>
+        <option value="select">Select</option>
+    </select><br>
+	<strong>Editable: </strong>
+    <input type="checkbox" ng-model="models.selected.editable" style="margin-top: 5px" value="true" /><br>
+	<strong>Editable Always: </strong>
+    <input type="checkbox" ng-model="models.selected.editableAlways" style="margin-top: 5px" value="true" /><br>
+	<input type="hidden" ng-model="models.selected.width" style="margin-top: 5px" /><br>
+</script>
+
+<script type="text/ng-template" id="gridprops.html">
+
+    <strong>Use Width: </strong>
+    <input type="checkbox" ng-model="models.selected.useWidth" style="margin-top: 5px" value="true" /><br/>
+
+    <input type="button" value="Add Grid Col" class="btn btn-primary"  ng-click="modifyGrid()"/> <br />
+
+    <strong ng-if="models.selected.col1 != null">Col1 width: </strong>
+    <input type="text" ng-if="models.selected.col1 != null" ng-model="models.selected.col1" class="form-control" style="margin-top: 5px" value="hidden" /><br/>
+    <strong ng-if="models.selected.col2 != null">Col2 width: </strong>
+    <input type="text" ng-if="models.selected.col2 != null" ng-model="models.selected.col2" class="form-control" style="margin-top: 5px" value="hidden" /><br/>
+
+    <strong ng-if="models.selected.col3 != null">Col3 width: </strong>
+    <input type="text" ng-if="models.selected.col3 != null" ng-model="models.selected.col3" class="form-control" style="margin-top: 5px" value="hidden" /><br/>
+    <strong ng-if="models.selected.col4 != null">Col4 width: </strong>
+    <input type="text" ng-if="models.selected.col4!= null" ng-model="models.selected.col4" class="form-control" style="margin-top: 5px" value="hidden" /><br/>
+    <strong ng-if="models.selected.col5 != null">Col5 width: </strong>
+    <input type="text" ng-if="models.selected.col5 != null" ng-model="models.selected.col5" class="form-control" style="margin-top: 5px" value="hidden" /><br/>
+    <strong ng-if="models.selected.col6 != null">Col6 width: </strong>
+    <input type="text" ng-if="models.selected.col6 != null" ng-model="models.selected.col6" class="form-control" style="margin-top: 5px" value="hidden" /><br/>
+
+    <strong ng-if="models.selected.col7 != null">Col7 width: </strong>
+    <input type="text" ng-if="models.selected.col7 != null" ng-model="models.selected.col7" class="form-control" style="margin-top: 5px" value="hidden" /><br/>
+    <strong ng-if="models.selected.col8 != null">Col8 width: </strong>
+    <input type="text" ng-if="models.selected.col8 != null" ng-model="models.selected.col8" class="form-control" style="margin-top: 5px" value="hidden" /><br/>
+
+    <strong ng-if="models.selected.col9 != null">Col9 width: </strong>
+    <input type="text" ng-if="models.selected.col9 != null" ng-model="models.selected.col9" class="form-control" style="margin-top: 5px" value="hidden" /><br/>
+    <strong ng-if="models.selected.col10 != null">Col10 width: </strong>
+    <input type="text" ng-if="models.selected.col10 != null" ng-model="models.selected.col10" class="form-control" style="margin-top: 5px" value="hidden" /><br/>
+    <strong ng-if="models.selected.col11 != null">Col11 width: </strong>
+    <input type="text" ng-if="models.selected.col11 != null" ng-model="models.selected.col11" class="form-control" style="margin-top: 5px" value="hidden" /><br/>
+    <strong ng-if="models.selected.col12 != null">Col12 width: </strong>
+    <input type="text" ng-if="models.selected.col12 != null" ng-model="models.selected.col12" class="form-control" style="margin-top: 5px" value="hidden" /><br/>
+
+</script>
+
+
+<script type="text/ng-template" id="componenttemplate.html">
+	<strong>Component: </strong>
+	<select ng-model="models.selected.componentName" class="form-control" ng-change="setComponentParams()">
+		<option value=""></option>
+   		<option ng-repeat="operator in components" value="{{operator.layoutName}}"
+				ng-selected="operator.layoutName == models.selected.componentName">
+			{{operator.layoutName}}
+		</option>
+	</select>
+	
+	<br />
+	<div class="box box-grey box-padding">
+        <h3>Component Properties</h3>
+		<div ng-if="models.selected.componentName">
+			<div ng-repeat="compParams in models.selected.componentParams">
+				<strong>{{compParams.name}}</strong>
+				<input type="text" ng-model="models.selected.componentParams[$index].value" class="form-control" style="margin-top: 5px" value="{{ compParams.value }}" />
+			</div>
+		</div>
+	</div>
+</script>
+
+<script type="text/ng-template" id="checktemplate.html">
+	<strong>{{ template.propertyName }}: </strong>
+    <input type="checkbox" dynamic-model="'models.selected.' + template.propertyKey" style="margin-top: 5px" value="true" /><br/>
+</script>
+
+<script type="text/ng-template" id="dropdowntemplate.html">
+	<strong>{{ template.propertyName }}: </strong>
+	<select dynamic-model="'models.selected.' + template.propertyKey" class="form-control">
+    	<option ng-repeat="option in template.options" value="{{ option.value }}">{{ option.display }}</option>
+	</select>
+</script>
+
+<script type="text/ng-template" id="texttemplate.html">
+	<strong>{{ template.propertyName }}: </strong>
+	<input type="text" dynamic-model="'models.selected.' + template.propertyKey" class="form-control" style="margin-top: 5px" />
+</script>
+
+<script type="text/ng-template" id="arrayoptions.html">
+	<br />
+	<div class="box box-grey box-padding">
+		<strong>Options:</strong>
+		<table dynamic-hide="'!models.selected.' + parameter.paramName + '.length'" class='table borderless'>
+ 			<tr dynamic-repeat="'c in models.selected.' + parameter.paramName">
+				<td>
+					<input type="text" ng-model="c.display"  class="form-control" style="margin-top: 5px" />
+				</td>
+				<td>
+					<input type="text" ng-model="c.value"  class="form-control" style="margin-top: 5px" />
+				</td>
+				<td>
+					<br />
+					<button type="button" class="btn btn-danger btn-sm" 
+							ng-click="deleteItem($index)" title="Delete Options">
+						<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+					</button>
+				</td>
+			</tr>
+		</table>
+	
+		<table class='table borderless'>
+ 			<tr>
+				<td>
+					<strong>Display</strong>
+					<input type="text" ng-model="models.selected.tempdisplay" class="form-control" />
+				</td>
+				<td>
+					<strong>Value</strong> 
+					<input type="text" ng-model="models.selected.tempoption" class="form-control" />
+				</td>
+				<td>
+					<br />
+					<button type="button" class="btn btn-success btn-sm" 
+							ng-click="addOption()" title="Add Options">
+						<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+					</button>
+				</td>
+			</tr>
+		</table>
+	</div>
+</script>
+
+<!-- Main area with dropzones and source code -->
+	
+<div class="row"> 
+	<div ng-repeat="(zone, list) in models.dropzones" class="col-md-9">
+	    <div class="dropzone box box-yellow">
+	        <!-- The dropzone also uses the list template -->
+	        <h3>Drag and Drop Fields Here </h3>
+	        <div ng-include="'list.html'"></div>
+	    </div>
+	      
+	   	<input type="text" ng-model="models.screenname"  placeholder= "Enter Screen Name"  class="form-control"/>
+	
+		<br/>
+	
+		<div ng-if="models.showComponentParams">
+			<div ng-repeat="paramRow in models.componentParams">
+				<div class="row">
+					<div class="col-md-5">
+						<input type="text" ng-model="paramRow.parameterName" placeholder= "Parameter Name" class="form-control" value={{paramRow.parameterName}}/>
+					</div>
+					<div class="col-md-5">
+						<input type="text" ng-model="paramRow.defaultValue" placeholder= "Default Value" class="form-control" value={{paramRow.defaultValue}}/>
+					</div>
+					<div class="col-md-2">
+						<button type="button" class="btn btn-default" aria-label="Left Align" ng-click="addParams()">
+						  	<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+						</button>
+						<button type="button" class="btn btn-default" aria-label="Left Align" ng-click="removeParams($index)">
+						  	<span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+						</button>
+					</div>
+				</div>
+				
+				<br />
+			</div>
+		</div>
+	
+		<br />
+		
+		<div class="row">
+			<div class="col-md-12">
+				<button type="button" class="btn btn-primary" ng-click="saveLayout()">Save Layout</button>
+				<button type="button" class="btn btn-primary" ng-click="saveComponent()">Save As Component</button>
+				<button type="button" class="btn btn-primary" ng-if="!models.showComponentParams" ng-click="addComponentParams()">Add Params</button>
+			</div>
+		</div>	
+	 </div>
+ 
+	 <div id="mySidenav" class="sidenav"> 
+	    <div class="toolbox box box-grey box-padding"  >
+	   
+	        <h3>New Elements</h3>
+	        <ul id="double">
+	            <!-- The toolbox only allows to copy objects, not move it. After a new
+	                 element was created, dnd-copied is invoked and we generate the next id -->
+	            <li ng-repeat="item in models.templates"
+	                dnd-draggable="item"
+	                dnd-effect-allowed="copy"
+	                dnd-copied="item.id = item.id + 1"
+	                >
+	                <button type="button" class="btn btn-primary" style="width:100px; cursor: move">{{item.displayName}}</button>
+	            </li>
+	        </ul>
+	         <div class="trashcan box box-grey box-padding" style="display: inline-block;">
+	         <h3>Trashcan</h3>
+	        <ul dnd-list="[]">
+	            <li><img src="nested/trashcan.jpg" height="72" width="100"/></li>
+	        </ul>
+	        </div>
+	    </div>
+	 </div>
+
+	 <div class="sticky col-md-3" style="z-index: 1;">
+	    <div ng-if="models.selected" class="box box-grey box-padding" width="200px">
+	        <h3>{{models.selected.type}} Properties</h3>
+
+			<strong>Style: </strong>
+			<select ng-model="models.selected.styleType" class="form-control">
+	        	<option value="type1">Style 1</option>
+	        	<option value="type2">Style 2</option>
+	        	<option value="type3">Style 3</option>
+				<option value="type4">Style 4</option>
+				<option value="type5">Style 5</option>
+				<option value="type6">Style 6</option>
+	    	</select>
+			
+			<strong>Label: </strong>
+			<input type="text" ng-model="models.selected.label" class="form-control" style="margin-top: 5px" />
+
+	        <strong>HTML ID: </strong>
+			<input type="text" ng-model="models.selected.htmlID" class="form-control" style="margin-top: 5px" />
+
+			<div ng-if="models.selectedTemplate.componentParams" ng-repeat="parameter in models.selectedTemplate.componentParams">
+				<div ng-if="parameter.paramType == 'options'" ng-include="'arrayoptions.html'"></div>				
+			</div>
+
+	        <div ng-repeat="template in models.selectedTemplate.componentProps">
+	        	<div dynamic-include="template.propertyDataType + 'template.html'"></div>
+	        </div>
+	        
+			<div ng-if="models.selected.type == 'component' ">
+				<div ng-include="'componenttemplate.html'"></div>
+			</div>
+
+	        <div ng-if="models.selected.type == 'grid' ">
+	        	<div ng-include="'gridprops.html'"></div>
+	    	</div>
+
+	        <div ng-if="models.selected.type == 'datatable' ">
+	            <div ng-include="'datatableprops.html'"></div>
+	        </div>
+
+	        <div ng-if="models.selected.type == 'datatablecolumn' ">
+	            <div ng-include="'datatablecolumnprops.html'"></div>
+	        </div>
+	    </div>
+        <!-- If you use [] as referenced list, the dropped elements will be lost -->
+	</div>
+</div>

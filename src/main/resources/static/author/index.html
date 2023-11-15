@@ -1,0 +1,246 @@
+<html ng-app="ui.bootstrap.demo">
+  <head>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.js"></script>
+    <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-1.0.3.js"></script>
+    <script src="example.js"></script>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="example.css">
+  </head>
+  <body>
+
+<style type="text/css">
+  form.tab-form-demo .tab-pane {
+    margin: 20px 20px;
+  }
+</style>
+
+<div ng-controller="TabsDemoCtrl">
+   
+  
+  <div class="container">
+  
+  <br/>
+  <br/>
+  <h2>{{screenname}}</h2>
+  <br/>
+  <div  class="row"> 
+  <div class="col-md-3">
+  <uib-tabset vertical="true" type="pills">
+  
+    <uib-tab ng-repeat="tab in layoutmodel.sectionData" heading="{{tab.sectionName}}" active="tab.sectionActive" disable="tab.disabled" select="selectTab(tab.sectionID)">
+     
+     
+
+    </uib-tab>
+   
+  </uib-tabset>
+</div>
+
+  <div class="col-md-9">
+  <form  ng-submit="SubmitForm()">
+  <div class="nestedDemo">
+  <div class="dropzone">
+   <div ng-repeat="obj in sectcontent.layout">
+  
+ <div ng-if="obj.type=='section'">
+   
+       <div ng-repeat="list in sectcontent" ng-include="'list.html'">
+       
+      
+</div>
+ </div>
+ 
+ 
+ <button type="submit" class="btn btn-primary">Save</button>
+
+ </div>
+
+</div>
+  </div>
+   </form>
+      
+</div>
+</div>
+</div>
+</div>
+  </body>
+  
+  <script type="text/ng-template" id="sectioncols.html">
+     <div ng-repeat="cd in obj2">
+        <div class="form-group" ng-if="cd.type=='textbox'">
+   
+       <label for="inputEmail">{{cd.label}}</label>
+        <input type="text" class="form-control"  ng-model="myappform[cd.htmlID]" id="{{cd.id}}" placeholder="{{cd.label}}">
+    </div>
+   <div class="form-group" ng-if="cd.type=='datepicker'">
+       <label for="inputEmail">{{cd.label}}</label>
+    <div style="display:inline-block; min-height:290px;">
+  <uib-datepicker ng-model="dt" min-date="minDate" show-weeks="true" class="well well-sm" custom-class="getDayClass(date, mode)"></uib-datepicker>
+</div>
+
+    </div>
+     <div class="form-group" ng-if="cd.type=='radiobutton'">
+  <label for="radio">{{cd.label}}</label>
+<div class="radio" ng-repeat="c in cd.options">
+<label><input type="radio" ng-model="myappform[cd.htmlID]" id="{{cd.id}}" name="optradio" value="{{c.value}}">{{c.display}}</label>
+</div>
+
+</div>
+     <div class="form-group" ng-if="cd.type=='checkbox'">
+  <label for="checkbox">{{cd.label}}</label>
+<div class="checkbox" ng-repeat="c in cd.options">
+<label><input type="checkbox" ng-model="myappform[cd.htmlID]" id="{{cd.id}}" name="optradio" value="{{c.value}}">{{c.display}}</label>
+</div>
+
+</div>
+ 
+
+    
+       <div class="form-group" ng-if="cd.type=='dropdown'">
+  <label for="sel1">{{cd.label}}</label>
+  <select class="form-control" id="{{cd.htmlID}}" ng-model="myappform[cd.htmlID]"  ng-change="selectItemChange()" >
+     <option ng-repeat="operator in cd.options" value="{{operator.value}}">{{operator.display}}</option>
+  </select>
+  <br>
+ </div>
+
+<div ng-if="cd.type=='Grid'">
+<table>
+
+<div ng-repeat="cd2 in cd.columns" ng-include="'grid.html'">
+
+ <div ng-repeat="cd3 in cd2">
+
+</div>
+</div>
+
+</div>
+
+   </div>
+</script>
+
+
+<script type="text/ng-template" id="list.html">
+    <ul>
+        <li ng-repeat="item in list"
+            
+            ng-class="{selected: models.selected === item}"
+            ng-include="item.type + '.html'">
+        </li>
+    </ul>
+</script>
+
+<!-- This template is responsible for rendering a container element. It uses
+     the above list template to render each container column -->
+<script type="text/ng-template" id="section.html">
+    <div class="container-element">
+     
+        <div class="column" ng-repeat="list in item.columns" ng-include="'list.html'"></div>
+        <div class="clearfix"></div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="Grid.html">
+    <div class="container-element-grid box box-blue">
+        <h3>{{item.label}}</h3>
+        <div class="column" ng-repeat="list in item.columns" ng-include="'list.html'"></div>
+        <div class="clearfix"></div>
+    </div>
+</script>
+
+<!-- Template for a normal list item -->
+<script type="text/ng-template" id="item.html">
+    <div class="item">Item {{item.id}}</div>
+</script>
+
+
+<!-- Template for a normal list item -->
+<script type="text/ng-template" id="header.html">
+    <div class="item">
+		<H1>{{item.label}}</H1>
+	</div>
+</script>
+<script type="text/ng-template" id="gridheader.html">
+    <div class="item gridheader">
+			{{item.label}}
+	</div>
+</script>
+<!-- Template for a normal list item -->
+<script type="text/ng-template" id="textbox.html">
+
+<div class="item">
+
+  <div class="offset2"><Label>{{item.label}}</Label></div>
+  <div class="offset3"><input type="text" id="{{item.id}}" size="{{item.length}}"  ng-model="myappform[item.htmlID]"></input></div>
+
+</div>
+  </div>
+</script>
+
+<!-- Template for a normal list item -->
+<script type="text/ng-template" id="radiobutton.html">
+ <div class="form-group">
+    <div class="item">
+	<div class="offset2"><Label>{{item.label}}</Label></div>
+		<div class="offset3">
+
+
+<table class='table borderless'>
+        <tr ng-repeat="c in item.options">
+            <td>{{c.display}}</td>
+               <td> <input type="radio" name="name" value="{{c.value}}" required ng-model="myappform[item.htmlID]" /></td>
+        </tr>
+    </table>
+
+
+</div>
+	</div>
+</div>
+</script>
+
+
+<!-- Template for a normal list item -->
+<script type="text/ng-template" id="dropdown.html">
+ <div class="form-group">
+     <div class="item">
+	<div class="offset2"><Label>{{item.label}}</Label></div>
+	
+<div class="offset3"> 
+<select id="{{item.id}}" ng-model="myappform[item.htmlID]">
+    <option ng-repeat="operator in item.options" value="{{operator.value}}">{{operator.display}}</option>
+</select>
+</div>
+	</div>
+</div>
+</script>
+
+
+<!-- Template for a normal list item -->
+<script type="text/ng-template" id="datepicker.html">
+    <div class="item">
+	<div class="offset2"><Label>{{item.label}}</Label></div>
+	<div class="offset3">	<input type="date" ></div>
+	
+	</div>
+</script>
+
+
+<!-- Template for a normal list item -->
+<script type="text/ng-template" id="checkbox.html">
+ <div class="form-group">
+    <div class="item">
+		<div class="offset2"><Label>{{item.label}}</Label></div>
+		<div class="offset3">	
+<table class='table borderless'>
+        <tr ng-repeat="c in item.options">
+            <td>{{c.display}}</td>
+               <td> <input type="checkbox" name="name" value="{{c.value}}" required ng-model="myappform[item.htmlID]"/></td>
+        </tr>
+    </table>
+
+</div>
+	</div>
+</div>
+</script>
+</html>
